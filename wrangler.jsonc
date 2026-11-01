@@ -1,0 +1,9 @@
+{
+  // Sitio estático: la landing en la raíz y las demos en /demo-ordenes y /demo-reservas
+  "name": "landing-pymes",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": ".",
+    "not_found_handling": "404-page"
+  }
+}

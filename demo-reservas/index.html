@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reservas con recordatorio – Demo</title>
+<meta name="description" content="Demo de un sistema simple de reservas con recordatorios por WhatsApp para barberías, consultorios y servicios con cita. Datos ficticios.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#101923;--bg:#F5F7F9;--card:#FFFFFF;--line:#D5DDE3;--mut:#3E4B58;--acc:#1F5FA8;--accd:#17487F;--wa:#0B6E4F;--wad:#08573E}
+*{box-sizing:border-box}
+body{margin:0;font-family:'IBM Plex Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+a{color:var(--acc)}a:hover{color:var(--accd)}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:#fff;padding:10px 14px;z-index:60}
+.skip:focus{left:8px;top:8px}
+:focus-visible{outline:3px solid #F2A33A;outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+.demo-bar{background:var(--ink);color:#F5F7F9;font-size:14px}
+.demo-bar .wrap{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;padding-top:10px;padding-bottom:10px}
+.demo-bar b{font-family:'IBM Plex Mono',monospace;font-weight:500;letter-spacing:.06em;color:#9FD8D3}
+header.top{background:var(--card);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:18px}
+h1{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em}
+nav{display:flex;flex-wrap:wrap;gap:8px}
+.tab{min-height:44px;padding:0 18px;border:1px solid var(--line);background:var(--card);border-radius:6px;font:500 15px 'IBM Plex Sans',sans-serif;color:var(--ink);cursor:pointer}
+.tab[aria-current="page"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tab .cnt{display:inline-block;min-width:22px;margin-left:6px;padding:0 6px;border-radius:999px;background:#FFF1D6;color:#6B3F00;font-size:13px}
+main{padding:28px 0 56px}
+.stats{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+.stat{flex:1 1 180px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;font-size:14px;color:var(--mut);display:flex;flex-direction:column;gap:2px}
+.stat .n{font-size:30px;font-weight:600;color:var(--ink);line-height:1.1}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:16px}
+.field{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--mut)}
+input,select,textarea{font:400 16px 'IBM Plex Sans',sans-serif;color:var(--ink);background:#fff;border:1px solid #8A98A5;border-radius:6px;min-height:44px;padding:8px 12px;max-width:100%}
+textarea{min-height:110px;resize:vertical;width:100%}
+.grow{flex:1 1 240px}
+.btn{min-height:44px;padding:0 20px;border:0;border-radius:6px;background:var(--acc);color:#fff;font:500 15px 'IBM Plex Sans',sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn:hover{background:var(--accd);color:#fff}
+.btn.sec{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
+.btn.sec:hover{background:#EEF2F5;color:var(--ink)}
+.btn.wa{background:var(--wa)}.btn.wa:hover{background:var(--wad)}
+.btn.sm{padding:0 14px}
+.daynav{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.daynav .lbl{font-weight:600;font-size:17px;min-width:200px;text-transform:capitalize}
+.tablebox{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:760px;font-size:15px}
+th{font:500 12px 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);background:#FAFBFC}
+td{padding:12px 14px;border-bottom:1px solid #E7ECF0;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.hora{font-family:'IBM Plex Mono',monospace;font-weight:500}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:13px;font-weight:500;white-space:nowrap}
+.b-p{background:#FFF1D6;color:#6B3F00}.b-c{background:#DCE8F7;color:#12437A}.b-a{background:#D9F0E4;color:#0B5A33}.b-n{background:#FBE1E1;color:#8A1C1C}.b-x{background:#E6EBEF;color:#3E4B58}
+.rem{font-size:13px;color:var(--mut);white-space:nowrap}
+.rem.ok{color:#0B5A33;font-weight:500}
+.empty{padding:32px;text-align:center;color:var(--mut)}
+.cards{display:flex;flex-direction:column;gap:12px}
+.rcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.rcard.done{background:#F3FAF6;border-color:#B9DEC9}
+.rcard h3{margin:0;font-size:17px}
+.rcard p{margin:2px 0 0;color:var(--mut);font-size:14px}
+.preview{margin-top:8px;background:#E9F6EF;border-radius:8px;padding:10px 12px;font-size:14px;color:var(--ink);max-width:560px;white-space:pre-wrap}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin-top:24px}
+.panel h2{margin:0 0 4px;font-size:18px}
+.panel p{margin:0 0 12px;color:var(--mut);font-size:14px}
+code{font-family:'IBM Plex Mono',monospace;font-size:13px;background:#EEF2F5;padding:1px 5px;border-radius:4px}
+.overlay{position:fixed;inset:0;background:rgba(16,25,35,.55);display:flex;align-items:flex-start;justify-content:center;padding:24px 12px;overflow-y:auto;z-index:50}
+.modal{background:#fff;border-radius:10px;width:100%;max-width:640px;padding:24px;margin:auto}
+.modal h2{margin:0 0 4px;font-size:22px}
+.grid2{display:flex;flex-wrap:wrap;gap:14px 24px;margin:16px 0}
+.grid2>div{flex:1 1 200px;min-width:0}
+.k{font-size:12px;color:var(--mut);font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.est{min-height:44px;padding:0 14px;border:1.5px solid var(--line);background:#fff;border-radius:6px;font:500 14px 'IBM Plex Sans',sans-serif;color:var(--ink);cursor:pointer}
+.est[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+form.f{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+form.f .two{display:flex;flex-wrap:wrap;gap:14px}
+form.f .two>label{flex:1 1 200px}
+.err{color:#9B1C1C;font-size:14px;font-weight:500;min-height:1.2em;margin:0}
+.foot{margin-top:32px;padding:20px;border:1px solid var(--line);border-radius:10px;background:#fff;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+.foot p{margin:0;max-width:640px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:no-preference){.tab,.btn,.est{transition:background .15s,border-color .15s}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<div class="demo-bar"><div class="wrap">
+  <span><b>DEMO</b> · Datos ficticios. Lo que escribas se guarda solo en tu navegador.</span>
+  <button class="btn sec sm" id="reset" type="button" style="background:transparent;color:#F5F7F9;border-color:#9FB0BE">Restablecer datos de ejemplo</button>
+</div></div>
+<header class="top"><div class="wrap">
+  <h1>Reservas · Barbería</h1>
+  <nav aria-label="Secciones">
+    <button class="tab" type="button" data-view="agenda" aria-current="page">Agenda</button>
+    <button class="tab" type="button" data-view="recordatorios">Recordatorios<span class="cnt" id="cnt-rem"></span></button>
+  </nav>
+</div></header>
+
+<main id="main"><div class="wrap">
+  <div class="stats" id="stats"></div>
+
+  <section id="v-agenda" aria-label="Agenda">
+    <div class="bar">
+      <div class="daynav">
+        <button class="btn sec sm" type="button" data-day="-1" aria-label="Día anterior">←</button>
+        <button class="btn sec sm" type="button" data-day="0">Hoy</button>
+        <button class="btn sec sm" type="button" data-day="1" aria-label="Día siguiente">→</button>
+        <span class="lbl" id="daylbl" aria-live="polite"></span>
+      </div>
+      <label class="field grow">Profesional
+        <select id="fp"><option>Todos</option></select>
+      </label>
+      <button class="btn" id="nueva" type="button">Nueva reserva</button>
+    </div>
+    <div class="tablebox" id="tabla"></div>
+  </section>
+
+  <section id="v-recordatorios" aria-label="Recordatorios" hidden>
+    <div class="bar" style="justify-content:space-between">
+      <div>
+        <h2 style="margin:0;font-size:18px">Citas de mañana</h2>
+        <p style="margin:0;color:var(--mut);font-size:14px" id="remlbl"></p>
+      </div>
+    </div>
+    <div class="cards" id="remlist"></div>
+
+    <div class="panel">
+      <h2>Mensaje de recordatorio</h2>
+      <p>Usa <code>{nombre}</code>, <code>{servicio}</code>, <code>{fecha}</code>, <code>{hora}</code> y <code>{profesional}</code>. Se reemplazan con los datos de cada cita.</p>
+      <label class="field">Plantilla<textarea id="tpl" maxlength="400"></textarea></label>
+    </div>
+  </section>
+
+  <div class="foot">
+    <p><strong>Esta es una plantilla.</strong> En la versión para tu negocio los recordatorios salen solos 24 horas antes por WhatsApp, y tus clientes pueden reservar desde un enlace. La adapto a tus servicios, horarios y personal.</p>
+    <a class="btn" href="https://wa.me/51903525222?text=Hola%20Jos%C3%A9%2C%20vi%20la%20demo%20de%20reservas%20con%20recordatorios%20y%20quiero%20una%20versi%C3%B3n%20para%20mi%20negocio.">Quiero una versión para mi negocio</a>
+  </div>
+</div></main>
+<div id="modal-root"></div>
+
+<script>
+(function(){
+'use strict';
+var K='reservas-demo-v1';
+var ESTADOS=['Pendiente','Confirmada','Asistió','No asistió','Cancelada'];
+var BADGE={'Pendiente':'b-p','Confirmada':'b-c','Asistió':'b-a','No asistió':'b-n','Cancelada':'b-x'};
+var SERVICIOS=[{n:'Corte',min:30},{n:'Barba',min:30},{n:'Corte y barba',min:60},{n:'Tinte',min:90}];
+var PROFES=['Luis','Carla','Miguel'];
+var APERTURA=9*60,CIERRE=20*60,PASO=30;
+var TPL='Hola {nombre}, te recordamos tu cita de {servicio} mañana {fecha} a las {hora} con {profesional}. Responde SÍ para confirmar o escríbenos si necesitas cambiarla.';
+var ui={view:'agenda',day:0,modal:null,confirmReset:false};
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function iso(n){var d=new Date();d.setDate(d.getDate()+n);var m=d.getMonth()+1,dd=d.getDate();return d.getFullYear()+'-'+(m<10?'0':'')+m+'-'+(dd<10?'0':'')+dd;}
+function fmt(s){var p=s.split('-');return p[2]+'/'+p[1];}
+function largo(s){var p=s.split('-');return new Date(+p[0],p[1]-1,+p[2]).toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long'});}
+function aMin(h){var p=h.split(':');return (+p[0])*60+(+p[1]);}
+function aHora(m){var h=Math.floor(m/60),mm=m%60;return (h<10?'0':'')+h+':'+(mm<10?'0':'')+mm;}
+function dur(serv){for(var i=0;i<SERVICIOS.length;i++)if(SERVICIOS[i].n===serv)return SERVICIOS[i].min;return 30;}
+function $(id){return document.getElementById(id);}
+
+function seed(){
+  var r=[],id=1;
+  function add(d,h,nom,serv,pro,est){r.push({id:id++,fecha:iso(d),hora:h,nombre:nom,tel:'',servicio:serv,profesional:pro,estado:est,recordado:null,nota:''});}
+  add(-1,'10:00','Jorge (ejemplo)','Corte','Luis','Asistió');
+  add(-1,'16:30','Renato (ejemplo)','Corte y barba','Miguel','No asistió');
+  add(0,'09:30','Andrés (ejemplo)','Corte','Luis','Asistió');
+  add(0,'11:00','Paolo (ejemplo)','Barba','Carla','Confirmada');
+  add(0,'15:00','Diego (ejemplo)','Corte y barba','Miguel','Confirmada');
+  add(0,'18:00','Kevin (ejemplo)','Tinte','Carla','Pendiente');
+  add(1,'10:00','Martín (ejemplo)','Corte','Luis','Pendiente');
+  add(1,'12:30','Sebastián (ejemplo)','Corte y barba','Carla','Pendiente');
+  add(1,'17:00','Óscar (ejemplo)','Barba','Miguel','Pendiente');
+  add(2,'11:30','Hugo (ejemplo)','Corte','Miguel','Pendiente');
+  return {nextId:id,tpl:TPL,reservas:r};
+}
+var state;
+function load(){try{var s=localStorage.getItem(K);if(s){var o=JSON.parse(s);if(o&&o.reservas)return o;}}catch(e){}return seed();}
+function save(){try{localStorage.setItem(K,JSON.stringify(state));}catch(e){}}
+state=load();
+
+function reserva(id){for(var i=0;i<state.reservas.length;i++)if(state.reservas[i].id===id)return state.reservas[i];return null;}
+function activa(r){return r.estado==='Pendiente'||r.estado==='Confirmada';}
+function delDia(f){return state.reservas.filter(function(r){return r.fecha===f;}).sort(function(a,b){return aMin(a.hora)-aMin(b.hora);});}
+function porRecordar(){return delDia(iso(1)).filter(function(r){return activa(r);});}
+
+// ¿El profesional ya tiene una cita activa que se cruza con este horario?
+function choca(fecha,hora,serv,pro,ignorar){
+  var ini=aMin(hora),fin=ini+dur(serv);
+  return state.reservas.some(function(r){
+    if(r.id===ignorar||r.fecha!==fecha||r.profesional!==pro||!activa(r))return false;
+    var a=aMin(r.hora),b=a+dur(r.servicio);
+    return ini<b&&a<fin;
+  });
+}
+function horasLibres(fecha,serv,pro){
+  var out=[],ahora=new Date(),minHoy=fecha===iso(0)?ahora.getHours()*60+ahora.getMinutes():-1;
+  for(var m=APERTURA;m+dur(serv)<=CIERRE;m+=PASO){
+    if(m<=minHoy)continue;
+    if(!choca(fecha,aHora(m),serv,pro,null))out.push(aHora(m));
+  }
+  return out;
+}
+
+function mensaje(r){
+  var p=r.fecha.split('-');
+  return (state.tpl||TPL).replace(/\{nombre\}/g,r.nombre.replace(' (ejemplo)',''))
+    .replace(/\{servicio\}/g,r.servicio.toLowerCase()).replace(/\{fecha\}/g,p[2]+'/'+p[1])
+    .replace(/\{hora\}/g,r.hora).replace(/\{profesional\}/g,r.profesional);
+}
+function waLink(r){
+  var tel=(r.tel||'').replace(/\D/g,'');
+  if(tel.length===9)tel='51'+tel;
+  return 'https://wa.me/'+(tel.length>=11?tel:'')+'?text='+encodeURIComponent(mensaje(r));
+}
+function remTxt(r){
+  if(r.recordado)return '<span class="rem ok">Enviado '+new Date(r.recordado).toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'})+'</span>';
+  return '<span class="rem">'+(r.fecha===iso(1)&&activa(r)?'Por enviar':'—')+'</span>';
+}
+
+function renderStats(){
+  var hoy=delDia(iso(0)).filter(function(r){return r.estado!=='Cancelada';}).length;
+  var man=delDia(iso(1)).filter(activa).length;
+  var pend=porRecordar().filter(function(r){return !r.recordado;}).length;
+  var semana=state.reservas.filter(function(r){return r.estado==='No asistió'&&r.fecha>=iso(-7)&&r.fecha<=iso(0);}).length;
+  $('stats').innerHTML=[[hoy,'Citas hoy'],[man,'Citas mañana'],[pend,'Recordatorios por enviar'],[semana,'Inasistencias (7 días)']].map(function(s){
+    return '<div class="stat"><span class="n">'+s[0]+'</span><span>'+s[1]+'</span></div>';
+  }).join('');
+  $('cnt-rem').textContent=pend||'';
+  $('cnt-rem').hidden=!pend;
+}
+function renderAgenda(){
+  var f=iso(ui.day),fp=$('fp').value;
+  $('daylbl').textContent=largo(f)+(ui.day===0?' · hoy':ui.day===1?' · mañana':'');
+  var rows=delDia(f).filter(function(r){return fp==='Todos'||r.profesional===fp;});
+  if(!rows.length){$('tabla').innerHTML='<div class="empty">No hay reservas para este día.</div>';return;}
+  $('tabla').innerHTML='<table><thead><tr><th>Hora</th><th>Cliente</th><th>Servicio</th><th>Profesional</th><th>Estado</th><th>Recordatorio</th><th><span class="sr">Acciones</span></th></tr></thead><tbody>'+
+  rows.map(function(r){
+    return '<tr><td class="hora">'+r.hora+'–'+aHora(aMin(r.hora)+dur(r.servicio))+'</td><td>'+esc(r.nombre)+'</td><td>'+esc(r.servicio)+'</td><td>'+esc(r.profesional)+'</td><td><span class="badge '+BADGE[r.estado]+'">'+r.estado+'</span></td><td>'+remTxt(r)+'</td><td><button type="button" class="btn sec sm" data-open="'+r.id+'" aria-label="Abrir reserva de '+esc(r.nombre)+'">Abrir</button></td></tr>';
+  }).join('')+'</tbody></table>';
+}
+function renderRecordatorios(){
+  var list=porRecordar(),pend=list.filter(function(r){return !r.recordado;}).length;
+  $('remlbl').textContent=largo(iso(1))+' · '+(list.length?(pend?pend+' por enviar de '+list.length:'Todos enviados'):'sin citas');
+  if(!list.length){$('remlist').innerHTML='<div class="tablebox"><div class="empty">No hay citas activas para mañana.</div></div>';return;}
+  $('remlist').innerHTML=list.map(function(r){
+    return '<article class="rcard'+(r.recordado?' done':'')+'"><div style="flex:1 1 320px;min-width:0">'+
+      '<h3>'+r.hora+' · '+esc(r.nombre)+'</h3><p>'+esc(r.servicio)+' con '+esc(r.profesional)+' · <span class="badge '+BADGE[r.estado]+'">'+r.estado+'</span> '+remTxt(r)+(r.tel?'':' · <em>sin teléfono: WhatsApp te pedirá el contacto</em>')+'</p>'+
+      '<div class="preview">'+esc(mensaje(r))+'</div></div>'+
+      '<div class="row"><a class="btn wa" href="'+waLink(r)+'" target="_blank" rel="noopener" data-remind="'+r.id+'">'+(r.recordado?'Reenviar':'Enviar por WhatsApp')+'</a>'+
+      (r.estado==='Pendiente'?'<button type="button" class="btn sec" data-confirm="'+r.id+'">Marcar confirmada</button>':'')+'</div></article>';
+  }).join('');
+}
+function renderAll(){renderStats();renderAgenda();renderRecordatorios();}
+
+function openModal(m){ui.modal=m;drawModal();}
+function closeModal(){ui.modal=null;$('modal-root').innerHTML='';}
+function opts(arr,sel){return arr.map(function(v){return '<option'+(v===sel?' selected':'')+'>'+esc(v)+'</option>';}).join('');}
+function drawModal(){
+  var m=ui.modal,root=$('modal-root');
+  if(!m){root.innerHTML='';return;}
+  var h;
+  if(m.type==='detalle'){
+    var r=reserva(m.id);if(!r){closeModal();return;}
+    h='<div class="overlay" data-overlay><div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt">'+
+    '<h2 id="mt">'+esc(r.nombre)+'</h2><span class="badge '+BADGE[r.estado]+'">'+r.estado+'</span> '+remTxt(r)+
+    '<div class="grid2"><div><div class="k">Fecha</div><span style="text-transform:capitalize">'+largo(r.fecha)+'</span></div><div><div class="k">Hora</div>'+r.hora+' – '+aHora(aMin(r.hora)+dur(r.servicio))+'</div><div><div class="k">Servicio</div>'+esc(r.servicio)+'</div><div><div class="k">Profesional</div>'+esc(r.profesional)+'</div><div><div class="k">Teléfono</div>'+(r.tel?esc(r.tel):'—')+'</div></div>'+
+    (r.nota?'<div class="k">Nota</div><p style="margin:4px 0 16px">'+esc(r.nota)+'</p>':'')+
+    '<div class="k" id="le">Cambiar estado</div><div class="row" role="group" aria-labelledby="le" style="margin:6px 0 18px">'+
+    ESTADOS.map(function(e){return '<button type="button" class="est" data-set="'+e+'" aria-pressed="'+(r.estado===e)+'">'+e+'</button>';}).join('')+'</div>'+
+    '<div class="row"><a class="btn wa" href="'+waLink(r)+'" target="_blank" rel="noopener" data-remind="'+r.id+'">Enviar recordatorio por WhatsApp</a><button type="button" class="btn sec" data-close id="cl">Cerrar</button></div>'+
+    '</div></div>';
+  } else {
+    var f=m.fecha||iso(ui.day<0?0:ui.day),s=m.servicio||SERVICIOS[0].n,p=m.profesional||PROFES[0];
+    var libres=horasLibres(f,s,p);
+    h='<div class="overlay" data-overlay><div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt"><h2 id="mt">Nueva reserva</h2>'+
+    '<form class="f" id="fnueva" novalidate>'+
+    '<div class="two"><label class="field">Nombre del cliente<input id="nn" required maxlength="60" autocomplete="off" value="'+esc(m.nombre||'')+'"></label>'+
+    '<label class="field">Teléfono (opcional)<input id="nt" inputmode="tel" maxlength="15" placeholder="9 dígitos" autocomplete="off" value="'+esc(m.tel||'')+'"></label></div>'+
+    '<div class="two"><label class="field">Servicio<select id="ns" data-refresh>'+opts(SERVICIOS.map(function(x){return x.n;}),s)+'</select></label>'+
+    '<label class="field">Profesional<select id="np" data-refresh>'+opts(PROFES,p)+'</select></label></div>'+
+    '<div class="two"><label class="field">Fecha<input id="nf" type="date" min="'+iso(0)+'" value="'+f+'" data-refresh></label>'+
+    '<label class="field">Hora disponible<select id="nh">'+(libres.length?opts(libres,null):'<option value="">Sin horarios libres</option>')+'</select></label></div>'+
+    '<label class="field">Nota (opcional)<input id="no" maxlength="120" autocomplete="off" value="'+esc(m.nota||'')+'"></label>'+
+    '<p class="err" id="nerr" role="alert"></p>'+
+    '<div class="row"><button class="btn" type="submit">Guardar reserva</button><button type="button" class="btn sec" data-close>Cancelar</button></div>'+
+    '</form></div></div>';
+  }
+  root.innerHTML=h;
+  var first=root.querySelector(m.focus||'#nn')||root.querySelector('#cl');
+  if(first)first.focus();
+}
+// Al cambiar servicio, profesional o fecha se recalculan los horarios libres sin perder lo escrito
+function refrescarNueva(focus){
+  openModal({type:'nueva',focus:focus,nombre:$('nn').value,tel:$('nt').value,servicio:$('ns').value,profesional:$('np').value,fecha:$('nf').value||iso(0),nota:$('no').value});
+}
+
+document.addEventListener('click',function(e){
+  var t=e.target;
+  if(t.hasAttribute&&t.hasAttribute('data-overlay')){closeModal();return;}
+  var b=t.closest&&t.closest('[data-view],[data-day],[data-open],[data-close],[data-set],[data-remind],[data-confirm],#nueva,#reset');
+  if(!b)return;
+  if(b.hasAttribute('data-view')){
+    ui.view=b.getAttribute('data-view');
+    $('v-agenda').hidden=ui.view!=='agenda';$('v-recordatorios').hidden=ui.view!=='recordatorios';
+    document.querySelectorAll('.tab').forEach(function(x){if(x===b)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current');});
+  } else if(b.hasAttribute('data-day')){
+    var d=parseInt(b.getAttribute('data-day'),10);ui.day=d===0?0:ui.day+d;renderAgenda();
+  } else if(b.hasAttribute('data-open')){
+    openModal({type:'detalle',id:parseInt(b.getAttribute('data-open'),10)});
+  } else if(b.hasAttribute('data-close')){
+    closeModal();
+  } else if(b.hasAttribute('data-set')){
+    var r=reserva(ui.modal.id);r.estado=b.getAttribute('data-set');save();renderAll();drawModal();
+  } else if(b.hasAttribute('data-remind')){
+    // El enlace abre WhatsApp en otra pestaña; aquí solo registramos el envío
+    var r2=reserva(parseInt(b.getAttribute('data-remind'),10));
+    if(r2){r2.recordado=new Date().toISOString();save();setTimeout(function(){renderAll();if(ui.modal)drawModal();},0);}
+  } else if(b.hasAttribute('data-confirm')){
+    var r3=reserva(parseInt(b.getAttribute('data-confirm'),10));r3.estado='Confirmada';save();renderAll();
+  } else if(b.id==='nueva'){
+    openModal({type:'nueva'});
+  } else if(b.id==='reset'){
+    if(!ui.confirmReset){ui.confirmReset=true;b.textContent='¿Seguro? Haz clic otra vez';setTimeout(function(){ui.confirmReset=false;b.textContent='Restablecer datos de ejemplo';},4000);}
+    else{state=seed();save();ui.confirmReset=false;b.textContent='Restablecer datos de ejemplo';closeModal();$('tpl').value=state.tpl;renderAll();}
+  }
+});
+document.addEventListener('change',function(e){
+  if(e.target.hasAttribute&&e.target.hasAttribute('data-refresh'))refrescarNueva('#'+e.target.id);
+  else if(e.target.id==='fp')renderAgenda();
+});
+document.addEventListener('submit',function(e){
+  e.preventDefault();
+  if(e.target.id!=='fnueva')return;
+  var nom=$('nn').value.trim(),hora=$('nh').value,f=$('nf').value,s=$('ns').value,p=$('np').value;
+  if(!nom){$('nerr').textContent='Escribe el nombre del cliente.';$('nn').focus();return;}
+  if(!f||f<iso(0)){$('nerr').textContent='Elige una fecha de hoy en adelante.';$('nf').focus();return;}
+  if(!hora){$('nerr').textContent=p+' no tiene horarios libres ese día para '+s.toLowerCase()+'. Prueba otra fecha o profesional.';return;}
+  if(choca(f,hora,s,p,null)){$('nerr').textContent='Ese horario acaba de ocuparse. Elige otro.';return;}
+  var r={id:state.nextId++,fecha:f,hora:hora,nombre:nom,tel:$('nt').value.trim(),servicio:s,profesional:p,estado:'Pendiente',recordado:null,nota:$('no').value.trim()};
+  state.reservas.push(r);save();
+  ui.day=Math.round((new Date(f+'T00:00')-new Date(iso(0)+'T00:00'))/864e5);
+  renderAll();openModal({type:'detalle',id:r.id});
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ui.modal)closeModal();});
+$('tpl').addEventListener('input',function(){state.tpl=this.value;save();renderRecordatorios();});
+PROFES.forEach(function(p){var op=document.createElement('option');op.textContent=p;$('fp').appendChild(op);});
+$('tpl').value=state.tpl;
+renderAll();
+})();
+</script>
+</body>
+</html>
