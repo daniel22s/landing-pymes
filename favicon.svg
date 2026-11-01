@@ -1,4 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="12" fill="#101923"/>
-  <text x="32" y="42" text-anchor="middle" font-family="IBM Plex Mono, Menlo, monospace" font-size="26" font-weight="600" fill="#9FD8D3">JD</text>
+  <text x="32" y="42" text-anchor="middle" font-family="IBM Plex Mono, Menlo, monospace" font-size="20" font-weight="600" fill="#9FD8D3">JDC</text>
 </svg>

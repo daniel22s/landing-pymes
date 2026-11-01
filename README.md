@@ -1,4 +1,4 @@
-# Landing · José Daniel Cruz Cuba
+# Landing · JDC Technologies
 
 Sitio estático (HTML + CSS, sin build) con dos demos:
 
