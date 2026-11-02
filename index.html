@@ -45,49 +45,100 @@
 
   <main id="contenido">
     <!-- Hero -->
-    <section id="inicio" class="section hero" aria-labelledby="hero-title">
+    <section id="inicio" class="hero" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div class="hero-text">
-          <p class="eyebrow">Desarrollo de software · Lima</p>
-          <h1 id="hero-title">Software a la medida para que tu empresa trabaje mejor.</h1>
-          <p class="lead">En JDC Technologies desarrollamos páginas web, sistemas de gestión y automatizaciones para empresas de cualquier rubro. Precio fijo y entregas por etapas.</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="https://wa.me/51903525222" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+          <p class="eyebrow fu d1">Desarrollo de software · Lima</p>
+          <h1 id="hero-title" class="fu d2">Software a la medida para que tu empresa <span>trabaje mejor.</span></h1>
+          <p class="lead fu d3">En JDC Technologies desarrollamos páginas web, sistemas de gestión y automatizaciones para empresas de cualquier rubro. Precio fijo y entregas por etapas.</p>
+          <div class="actions fu d4">
+            <a class="btn btn-primary" href="https://wa.me/51903525222" target="_blank" rel="noopener">Escríbenos por WhatsApp <span class="arr" aria-hidden="true">→</span></a>
             <a class="btn btn-secondary" href="#casos">Ver casos reales</a>
           </div>
         </div>
 
-        <aside class="card ficha" aria-labelledby="ficha-title">
-          <h2 id="ficha-title" class="eyebrow">Ficha</h2>
-          <dl class="ficha-list">
-            <div><dt>Base</dt><dd>Lima, Perú</dd></div>
-            <div><dt>Formación</dt><dd>Desarrollo de Software, SENATI</dd></div>
-            <div><dt>Herramientas</dt><dd>React, Supabase, Vercel</dd></div>
-            <div><dt>Enfoque</dt><dd>Empresas de cualquier rubro</dd></div>
-          </dl>
-        </aside>
+        <div class="hero-visual fu d3">
+          <div class="dots-wrap">
+            <div class="dots-card" aria-hidden="true">
+              <div class="dots">
+            <div class="dot b" style="--d:0s"></div>
+            <div class="dot b" style="--d:.25s"></div>
+            <div class="dot k" style="--i:0"></div>
+            <div class="dot k" style="--i:1"></div>
+            <div class="dot k" style="--i:2"></div>
+            <div class="dot b" style="--d:.25s"></div>
+            <div class="dot b" style="--d:.5s"></div>
+            <div class="dot b" style="--d:.75s"></div>
+            <div class="dot k" style="--i:3"></div>
+            <div class="dot b" style="--d:1.25s"></div>
+            <div class="dot b" style="--d:.5s"></div>
+            <div class="dot b" style="--d:.75s"></div>
+            <div class="dot b" style="--d:1s"></div>
+            <div class="dot k" style="--i:4"></div>
+            <div class="dot b" style="--d:1.5s"></div>
+            <div class="dot v" style="--i:6"></div>
+            <div class="dot b" style="--d:1s"></div>
+            <div class="dot b" style="--d:1.25s"></div>
+            <div class="dot k" style="--i:5"></div>
+            <div class="dot b" style="--d:1.75s"></div>
+            <div class="dot b" style="--d:1s"></div>
+            <div class="dot v" style="--i:7"></div>
+            <div class="dot v" style="--i:8"></div>
+            <div class="dot b" style="--d:1.75s"></div>
+            <div class="dot b" style="--d:2s"></div>
+              </div>
+            </div>
+            <div class="chip chip-1"><span class="live"></span>Precio fijo</div>
+            <div class="chip chip-2">Entregas por etapas</div>
+            <div class="chip chip-3">Lima, Perú</div>
+          </div>
+        </div>
       </div>
     </section>
+
+    <!-- Cinta de servicios (decorativa) -->
+    <div class="strip" aria-hidden="true">
+      <div class="track">
+      <ul class="group">
+        <li>Páginas web</li>
+        <li>Automatizaciones</li>
+        <li>Sistemas de gestión</li>
+        <li>Órdenes de trabajo</li>
+        <li>Reservas con WhatsApp</li>
+        <li>Precio fijo</li>
+        <li>Entregas por etapas</li>
+      </ul>
+      <ul class="group">
+        <li>Páginas web</li>
+        <li>Automatizaciones</li>
+        <li>Sistemas de gestión</li>
+        <li>Órdenes de trabajo</li>
+        <li>Reservas con WhatsApp</li>
+        <li>Precio fijo</li>
+        <li>Entregas por etapas</li>
+      </ul>
+      </div>
+    </div>
 
     <!-- Servicios -->
     <section id="servicios" class="section section-white" aria-labelledby="servicios-title">
       <div class="container">
-        <p class="eyebrow">Servicios</p>
-        <h2 id="servicios-title">Tres paquetes, con alcance y precio definidos.</h2>
+        <p class="eyebrow rv">Servicios</p>
+        <h2 id="servicios-title" class="rv">Tres paquetes, con alcance y precio definidos.</h2>
         <ul class="grid-3" role="list">
-          <li class="card service">
+          <li class="card service rv">
             <span class="num">01</span>
             <h3>Presencia básica</h3>
             <p>Landing page, botón de WhatsApp y ficha de Google Business Profile para que te encuentren y te escriban.</p>
             <p class="price">Desde S/ 500</p>
           </li>
-          <li class="card service">
+          <li class="card service rv">
             <span class="num">02</span>
             <h3>Automatización</h3>
             <p>Cotizaciones y órdenes de trabajo con Sheets y formularios, con avisos por WhatsApp. Menos papel, menos errores.</p>
             <p class="price">Desde S/ 800</p>
           </li>
-          <li class="card service service-featured">
+          <li class="card service service-featured rv">
             <span class="num">03</span>
             <h3>Sistema de gestión a medida</h3>
             <p>Clientes, ventas, inventario u órdenes: lo que tu empresa necesite, en un solo sistema web con usuarios y permisos. Mantenimiento mensual opcional.</p>
@@ -100,32 +151,44 @@
     <!-- Casos -->
     <section id="casos" class="section" aria-labelledby="casos-title">
       <div class="container">
-        <p class="eyebrow">Casos</p>
-        <h2 id="casos-title">Trabajos recientes.</h2>
+        <p class="eyebrow rv">Casos</p>
+        <h2 id="casos-title" class="rv">Trabajos recientes.</h2>
         <div class="grid-2">
-          <article class="card case case-dark">
-            <p class="eyebrow">Sistema de gestión</p>
+          <article class="card case case-dark rv">
+            <div class="case-top">
+              <p class="eyebrow">Sistema de gestión</p>
+              <span class="tag tag-test"><span class="live"></span>En pruebas con el cliente</span>
+            </div>
             <h3>Isotanques: lavado, reparación y test</h3>
             <p>Sistema web para una empresa de lavado, reparación y test de isotanques. Registra cada isotanque, sus visitas y las órdenes de servicio, con clientes, productos y usuarios por rol.</p>
             <p class="stack">React · Vite · Supabase · Vercel</p>
           </article>
-          <article class="card case">
-            <p class="eyebrow">Sitio web</p>
+          <article class="card case rv">
+            <div class="case-top">
+              <p class="eyebrow">Sitio web</p>
+              <span class="tag tag-dev">En desarrollo</span>
+            </div>
             <h3>VEKTRA HAIR STUDIO</h3>
             <p>Sitio web para una barbería. Está en desarrollo: falta agregar las fotos de los trabajos y del local.</p>
-            <p class="stack"><a class="case-link" href="https://barberia-web.cruzdani543.workers.dev/" target="_blank" rel="noopener">Ver sitio</a></p>
+            <p class="stack"><a class="case-link" href="https://barberia-web.cruzdani543.workers.dev/" target="_blank" rel="noopener">Ver sitio <span class="arr" aria-hidden="true">→</span></a></p>
           </article>
-          <article class="card case">
-            <p class="eyebrow">Demo · Órdenes de trabajo</p>
+          <article class="card case rv">
+            <div class="case-top">
+              <p class="eyebrow">Demo · Órdenes de trabajo</p>
+              <span class="tag tag-demo">Interactiva</span>
+            </div>
             <h3>Órdenes para talleres y servicio técnico</h3>
             <p>Registra cada orden con cliente, equipo y fecha de entrega. Muestra las vencidas y avisa al cliente por WhatsApp cuando cambia el estado.</p>
-            <p class="stack"><a class="case-link" href="demo-ordenes/">Probar la demo</a></p>
+            <p class="stack"><a class="case-link" href="demo-ordenes/">Probar la demo <span class="arr" aria-hidden="true">→</span></a></p>
           </article>
-          <article class="card case">
-            <p class="eyebrow">Demo · Reservas</p>
+          <article class="card case rv">
+            <div class="case-top">
+              <p class="eyebrow">Demo · Reservas</p>
+              <span class="tag tag-demo">Interactiva</span>
+            </div>
             <h3>Reservas con recordatorio por WhatsApp</h3>
             <p>Agenda por profesional sin cruces de horario y lista de citas de mañana con el recordatorio listo para enviar. Pensado para barberías, consultorios y servicios con cita.</p>
-            <p class="stack"><a class="case-link" href="demo-reservas/">Probar la demo</a></p>
+            <p class="stack"><a class="case-link" href="demo-reservas/">Probar la demo <span class="arr" aria-hidden="true">→</span></a></p>
           </article>
         </div>
       </div>
@@ -134,26 +197,27 @@
     <!-- Proceso -->
     <section id="proceso" class="section section-white" aria-labelledby="proceso-title">
       <div class="container">
-        <p class="eyebrow">Proceso</p>
-        <h2 id="proceso-title">Cómo trabajamos juntos.</h2>
+        <p class="eyebrow rv">Proceso</p>
+        <h2 id="proceso-title" class="rv">Cómo trabajamos juntos.</h2>
+        <div class="steps-line" aria-hidden="true"></div>
         <ol class="steps">
           <li class="step">
-            <span class="num">1</span>
+            <span class="badge">1</span>
             <h3>Conversamos</h3>
             <p>Nos cuentas cómo trabajas hoy y qué te quita tiempo.</p>
           </li>
           <li class="step">
-            <span class="num">2</span>
+            <span class="badge">2</span>
             <h3>Propuesta con precio fijo</h3>
             <p>Alcance, plazo y costo por escrito, sin sorpresas.</p>
           </li>
           <li class="step">
-            <span class="num">3</span>
+            <span class="badge">3</span>
             <h3>Entrega por etapas</h3>
             <p>Ves avances reales y ajustamos antes de terminar.</p>
           </li>
           <li class="step">
-            <span class="num">4</span>
+            <span class="badge">4</span>
             <h3>Soporte</h3>
             <p>Te capacitamos y, si quieres, queda un mantenimiento mensual.</p>
           </li>
@@ -164,31 +228,30 @@
     <!-- Contacto -->
     <section id="contacto" class="section section-dark" aria-labelledby="contacto-title">
       <div class="container contact-grid">
-        <div>
+        <div class="rv">
           <p class="eyebrow">Contacto</p>
           <h2 id="contacto-title">Cuéntanos qué necesita tu empresa.</h2>
           <p class="lead">Escríbenos y te respondemos con una idea clara de qué se puede resolver y cuánto costaría.</p>
+          <a class="btn btn-primary" href="https://wa.me/51903525222" target="_blank" rel="noopener">Escríbenos por WhatsApp <span class="arr" aria-hidden="true">→</span></a>
         </div>
-        <dl class="contact-list">
-          <div>
-            <dt>WhatsApp</dt>
-            <dd><a href="https://wa.me/51903525222" target="_blank" rel="noopener">903 525 222</a></dd>
-          </div>
-          <div>
-            <dt>Correo</dt>
-            <dd><a href="mailto:josedanielcruzcuba@gmail.com">josedanielcruzcuba@gmail.com</a></dd>
-          </div>
-          <div>
-            <dt>LinkedIn</dt>
-            <dd><a href="https://www.linkedin.com/in/josedaniel-jr/" target="_blank" rel="noopener">linkedin.com/in/josedaniel-jr</a></dd>
-          </div>
-        </dl>
+        <ul class="contact-list rv" role="list">
+          <li>
+            <a class="contact-link" href="https://wa.me/51903525222" target="_blank" rel="noopener"><span><span class="ct-label">WhatsApp</span><span class="ct-value">903 525 222</span></span><span class="arr" aria-hidden="true">→</span></a>
+          </li>
+          <li>
+            <a class="contact-link" href="mailto:josedanielcruzcuba@gmail.com"><span><span class="ct-label">Correo</span><span class="ct-value">josedanielcruzcuba@gmail.com</span></span><span class="arr" aria-hidden="true">→</span></a>
+          </li>
+          <li>
+            <a class="contact-link" href="https://www.linkedin.com/in/josedaniel-jr/" target="_blank" rel="noopener"><span><span class="ct-label">LinkedIn</span><span class="ct-value">linkedin.com/in/josedaniel-jr</span></span><span class="arr" aria-hidden="true">→</span></a>
+          </li>
+        </ul>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container">
+    <div class="container footer-inner">
+      <img src="img/logo/jdc-lockup-reverse.svg" alt="JDC Technologies" width="111" height="40">
       <p>JDC Technologies · José Daniel Cruz Cuba · Lima, Perú</p>
     </div>
   </footer>
